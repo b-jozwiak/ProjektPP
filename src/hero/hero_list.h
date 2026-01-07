@@ -12,6 +12,15 @@ typedef struct {
     int next_id;
 } HeroList;
 
+typedef struct {
+    HeroList* list;
+    int current_index;
+} HeroListIterator;
+
+HeroListIterator hero_iterator(HeroList* list);
+bool has_next_hero(HeroListIterator* iterator);
+Hero* get_next_hero(HeroListIterator* iterator);
+
 
 HeroList* init_hero_list();
 bool resize_hero_list_if_needed(HeroList* list);

@@ -3,6 +3,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+HeroListIterator hero_iterator(HeroList* list) {
+    HeroListIterator iterator;
+    iterator.list = list;
+    iterator.current_index = 0;
+    return iterator;
+
+}
+bool has_next_hero(HeroListIterator* iterator) {
+    return iterator->current_index < iterator->list->count;
+}
+Hero* get_next_hero(HeroListIterator* iterator) {
+    if (!has_next_hero(iterator)) {
+        return NULL;
+    }
+    return &iterator->list->heroes[iterator->current_index++];
+}
 
 HeroList* init_hero_list() {
     HeroList* list = (HeroList*)malloc(sizeof(HeroList));
