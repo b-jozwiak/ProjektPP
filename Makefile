@@ -11,8 +11,12 @@ EXECUTABLE = $(BIN_DIR)/test_program
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) | $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS)
+
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
