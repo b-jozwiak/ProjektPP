@@ -5,7 +5,7 @@ SRC_DIR = src
 OBJ_DIR = out/obj
 BIN_DIR = out
 
-SOURCES = src/main.c 
+SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
 EXECUTABLE = $(BIN_DIR)/test_program
 
