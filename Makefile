@@ -5,7 +5,7 @@ SRC_DIR = src
 OBJ_DIR = out/obj
 BIN_DIR = out
 
-SOURCES = $(wildcard $(SRC_DIR)/*.c)
+SOURCES = $(shell find $(SRC_DIR) -name '*.c')
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
 EXECUTABLE = $(BIN_DIR)/test_program
 
@@ -22,6 +22,7 @@ $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
