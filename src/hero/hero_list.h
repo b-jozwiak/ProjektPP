@@ -18,6 +18,7 @@ typedef bool (*HeroFilterFunc)(const Hero*, void* state);
  */
 typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, void* state);
 
+
 // -------------------------------------------------
 
 typedef struct {

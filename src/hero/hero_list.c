@@ -22,7 +22,6 @@ Hero* get_next_hero(HeroListIterator* iterator) {
     return &iterator->list->heroes[iterator->current_index++];
 }
 
-
 // -------------------------------------------------
 
 HeroList* init_hero_list() {
