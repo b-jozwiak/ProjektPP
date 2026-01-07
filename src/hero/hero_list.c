@@ -38,7 +38,7 @@ HeroList* init_hero_list() {
     return list;
 }
 
-bool is_name_valid(HeroList* list, const char* name) {
+bool is_name_avaliable(HeroList* list, const char* name) {
     if (name == NULL) {
         return false;
     }
@@ -55,7 +55,13 @@ bool is_name_valid(HeroList* list, const char* name) {
         return false;
     }
 
-
+    HeroListIterator iterator = hero_iterator(list);
+    while (has_next_hero(&iterator)) {
+        Hero* existing_hero = get_next_hero(&iterator);
+        if (strcmp(existing_hero->name, name) == 0) {
+            return false;
+        }
+    }
 
     return true;
 }
