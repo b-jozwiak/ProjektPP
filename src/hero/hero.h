@@ -38,4 +38,16 @@ typedef struct {
     HeroStatus status;
 } Hero;
 
+typedef struct {
+    Hero *heroes;
+    int count;
+    int capacity;
+    int next_id;
+} HeroList;
+
+
+HeroList* init_hero_list();
+void resize_hero_list_if_needed(HeroList* list);
+void free_hero_list(HeroList* list);
+
 #endif // HERO_H
