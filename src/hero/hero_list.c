@@ -22,7 +22,7 @@ HeroList* init_hero_list() {
     return list;
 }
 
-bool is_name_valid(const char* name) {
+bool is_name_valid(HeroList* list, const char* name) {
     if (name == NULL) {
         return false;
     }
