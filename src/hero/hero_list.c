@@ -192,6 +192,22 @@ bool delete_hero(HeroList* list, Hero* hero) {
     return true;
 }
 
+bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete) {
+    if (originalList == NULL || subsetToDelete == NULL) {
+        return false;
+    }
+
+    HeroListIterator iterator = hero_iterator(subsetToDelete);
+    while (has_next_hero(&iterator)) {
+        Hero* heroToDelete = get_next_hero(&iterator);
+        if (!delete_hero(originalList, heroToDelete)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
 void free_hero_list(HeroList* list) {
     if (list != NULL) {
