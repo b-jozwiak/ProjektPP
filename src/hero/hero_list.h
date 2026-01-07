@@ -18,6 +18,7 @@ typedef bool (*HeroFilterFunc)(const Hero*, void* state);
  */
 typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, void* state);
 
+// -------------------------------------------------
 
 typedef struct {
     Hero *heroes;
@@ -31,21 +32,33 @@ typedef struct {
     int current_index;
 } HeroListIterator;
 
+// -------------------------------------------------
+
 HeroListIterator hero_iterator(HeroList* list);
 bool has_next_hero(HeroListIterator* iterator);
 Hero* get_next_hero(HeroListIterator* iterator);
 
+// -------------------------------------------------
 
 HeroList* init_hero_list();
+void free_hero_list(HeroList* list);
+
+// -------------------------------------------------
+
+bool is_name_avaliable(HeroList* list, const char* name);
+
+// -------------------------------------------------
 
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status);
-bool resize_hero_list_if_needed(HeroList* list);
+bool delete_hero(HeroList* list, Hero* hero);
+bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete);
+
+// -------------------------------------------------
+
 Hero* find_hero(HeroList* list, HeroFilterFunc filter, void* state); 
 HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, void* state);
 HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, void* state);
-bool delete_hero(HeroList* list, Hero* hero);
-void free_hero_list(HeroList* list);
-bool is_name_avaliable(HeroList* list, const char* name);
+
 
 #endif // HERO_LIST_H

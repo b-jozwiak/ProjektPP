@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// -------------------------------------------------
+
 HeroListIterator hero_iterator(HeroList* list) {
     HeroListIterator iterator;
     iterator.list = list;
@@ -19,6 +21,9 @@ Hero* get_next_hero(HeroListIterator* iterator) {
     }
     return &iterator->list->heroes[iterator->current_index++];
 }
+
+
+// -------------------------------------------------
 
 HeroList* init_hero_list() {
     HeroList* list = (HeroList*)malloc(sizeof(HeroList));
@@ -37,6 +42,60 @@ HeroList* init_hero_list() {
 
     return list;
 }
+
+void free_hero_list(HeroList* list) {
+    if (list != NULL) {
+        free(list->heroes);
+        free(list);
+    }
+}
+
+bool resize_hero_list_if_needed(HeroList* list) {
+    if (list->count >= list->capacity) {
+        int new_capacity = list->capacity * 2;
+        Hero* temp = (Hero*)realloc(list->heroes, sizeof(Hero) * new_capacity);
+        if (temp == NULL) {
+            fprintf(stderr, "Blad powiekszenia listy bohaterow.\n");
+            return false;
+        }
+        list->capacity = new_capacity;
+        list->heroes = temp;
+    }
+
+    return true;
+}
+
+// -------------------------------------------------
+
+bool is_name_avaliable(HeroList* list, const char* name) {
+    if (name == NULL) {
+        return false;
+    }
+
+    int length = 0;
+    while (name[length] != '\0') {
+        length++;
+        if (length > MAX_HERO_NAME_LENGTH) {
+            return false;
+        }
+    }
+
+    if (length == 0) {
+        return false;
+    }
+
+    HeroListIterator iterator = hero_iterator(list);
+    while (has_next_hero(&iterator)) {
+        Hero* existing_hero = get_next_hero(&iterator);
+        if (strcmp(existing_hero->name, name) == 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// -------------------------------------------------
 
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status) {
@@ -118,49 +177,6 @@ HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, void* state) {
     return sorted_list;
 }
 
-bool is_name_avaliable(HeroList* list, const char* name) {
-    if (name == NULL) {
-        return false;
-    }
-
-    int length = 0;
-    while (name[length] != '\0') {
-        length++;
-        if (length > MAX_HERO_NAME_LENGTH) {
-            return false;
-        }
-    }
-
-    if (length == 0) {
-        return false;
-    }
-
-    HeroListIterator iterator = hero_iterator(list);
-    while (has_next_hero(&iterator)) {
-        Hero* existing_hero = get_next_hero(&iterator);
-        if (strcmp(existing_hero->name, name) == 0) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-bool resize_hero_list_if_needed(HeroList* list) {
-    if (list->count >= list->capacity) {
-        int new_capacity = list->capacity * 2;
-        Hero* temp = (Hero*)realloc(list->heroes, sizeof(Hero) * new_capacity);
-        if (temp == NULL) {
-            fprintf(stderr, "Blad powiekszenia listy bohaterow.\n");
-            return false;
-        }
-        list->capacity = new_capacity;
-        list->heroes = temp;
-    }
-
-    return true;
-}
-
 bool delete_hero(HeroList* list, Hero* hero) {
     if (list == NULL || hero == NULL) {
         return false;
@@ -208,10 +224,3 @@ bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete) {
     return true;
 }
 
-
-void free_hero_list(HeroList* list) {
-    if (list != NULL) {
-        free(list->heroes);
-        free(list);
-    }
-}
