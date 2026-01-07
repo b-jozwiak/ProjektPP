@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include "display/display.h"
 
 
 int main() {
-    printf("Program testowy\n");
+    test_display();
     return 0;
 }
