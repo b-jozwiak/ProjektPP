@@ -1,7 +1,6 @@
-#include "display/display.h"
-
+#include <stdio.h>
 
 int main() {
-    test_display();
+
     return 0;
 }
