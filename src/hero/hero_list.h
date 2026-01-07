@@ -5,6 +5,8 @@
 
 #include "hero.h"
 
+
+
 typedef struct {
     Hero *heroes;
     int count;
@@ -23,7 +25,12 @@ Hero* get_next_hero(HeroListIterator* iterator);
 
 
 HeroList* init_hero_list();
+
+Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
+               int experience_level, int reputation, HeroStatus status);
 bool resize_hero_list_if_needed(HeroList* list);
+Hero* find_hero_by_name(HeroList* list, const char* name); 
+
 bool delete_hero(HeroList* list, Hero* hero);
 void free_hero_list(HeroList* list);
 bool is_name_avaliable(HeroList* list, const char* name);

@@ -38,7 +38,8 @@ typedef struct {
     HeroStatus status;
 } Hero;
 
-
+Hero create_hero(const char* name, HeroRace race, HeroClass hero_class, int experience_level, int reputation, HeroStatus status);
+void print_hero(const Hero* hero);
 #include "hero_list.h"
 
 #endif // HERO_H

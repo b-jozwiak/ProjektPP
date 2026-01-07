@@ -38,6 +38,34 @@ HeroList* init_hero_list() {
     return list;
 }
 
+Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
+               int experience_level, int reputation, HeroStatus status) {
+    if (!resize_hero_list_if_needed(list)) {
+        return NULL;
+    }
+
+    Hero new_hero = create_hero(name, race, hero_class, experience_level, reputation, status);
+    list->heroes[list->count] = new_hero;
+    list->count++;
+    return &list->heroes[list->count - 1];
+}
+
+Hero* find_hero_by_name(HeroList* list, const char* name) {
+    if (name == NULL) {
+        return NULL;
+    }
+
+    HeroListIterator iterator = hero_iterator(list);
+    while (has_next_hero(&iterator)) {
+        Hero* hero = get_next_hero(&iterator);
+        if (strcmp(hero->name, name) == 0) {
+            return hero;
+        }
+    }
+
+    return NULL;
+}
+
 bool is_name_avaliable(HeroList* list, const char* name) {
     if (name == NULL) {
         return false;
@@ -95,6 +123,7 @@ bool delete_hero(HeroList* list, Hero* hero) {
     }
 
     if (index == -1) {
+        printf("Blad: Bohater nie znaleziony na liscie.\n");
         return false;
     }
 
