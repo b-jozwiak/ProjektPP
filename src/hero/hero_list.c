@@ -166,6 +166,11 @@ bool delete_hero(HeroList* list, Hero* hero) {
         return false;
     }
 
+    if (hero->status == ON_QUEST) {
+        printf("Nie mozna wyrejestrowac bohatera, ktory jest na misji.\n");
+        return false;
+    }
+
     int index = -1;
     for (int i = 0; i < list->count; i++) {
         if (&list->heroes[i] == hero) {
