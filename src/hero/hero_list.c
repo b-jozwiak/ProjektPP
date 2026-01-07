@@ -50,20 +50,72 @@ Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_c
     return &list->heroes[list->count - 1];
 }
 
-Hero* find_hero_by_name(HeroList* list, const char* name) {
-    if (name == NULL) {
+void add_hero_direct(HeroList* list, Hero* hero) {
+    if (!resize_hero_list_if_needed(list)) {
+        return;
+    }
+
+    list->heroes[list->count] = *hero;
+    list->count++;
+}
+
+Hero* find_hero(HeroList* list, HeroFilterFunc filter, void* state) {
+    HeroListIterator iterator = hero_iterator(list);
+    while (has_next_hero(&iterator)) {
+        Hero* hero = get_next_hero(&iterator);
+        if (filter(hero, state)) {
+            return hero;
+        }
+    }
+    return NULL;
+}
+
+HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, void* state) {
+    if (list == NULL || filter == NULL) {
+        return NULL;
+    }
+    
+    HeroList* filtered_list = init_hero_list();
+    if (filtered_list == NULL) {
         return NULL;
     }
 
     HeroListIterator iterator = hero_iterator(list);
     while (has_next_hero(&iterator)) {
         Hero* hero = get_next_hero(&iterator);
-        if (strcmp(hero->name, name) == 0) {
-            return hero;
+        if (filter(hero, state)) {
+            add_hero_direct(filtered_list, hero);
         }
     }
 
-    return NULL;
+    return filtered_list;
+}
+
+HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, void* state) {
+    if (list == NULL || compare == NULL) {
+        return NULL;
+    }
+
+    HeroList* sorted_list = init_hero_list();
+    if (sorted_list == NULL) {
+        return NULL;
+    }
+
+    for (int i = 0; i < list->count; i++) {
+        add_hero_direct(sorted_list, &list->heroes[i]);
+    }
+
+    for (int i = 0; i < sorted_list->count - 1; i++) {
+        for (int j = 0; j < sorted_list->count - i - 1; j++) {
+            if (!compare(&sorted_list->heroes[j], &sorted_list->heroes[j + 1], state)) {
+                Hero temp = sorted_list->heroes[j];
+                sorted_list->heroes[j] = sorted_list->heroes[j + 1];
+                sorted_list->heroes[j + 1] = temp;
+            }
+        }
+    }
+
+    return sorted_list;
 }
 
 bool is_name_avaliable(HeroList* list, const char* name) {

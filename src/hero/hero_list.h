@@ -4,7 +4,19 @@
 #include <stdbool.h>
 
 #include "hero.h"
+/**
+ * Funkcja filtrujaca bohaterow.
+ * Zwraca true, jesli bohater spelnia warunki filtra.
+ * Zwraca false w przeciwnym wypadku.
+ */
+typedef bool (*HeroFilterFunc)(const Hero*, void* state);
 
+/**
+ * Funkcja porownujaca dwoch bohaterow.
+ * Zwraca true, jesli pierwszy bohater powinien byc przed drugim w posortowanej kolejnosci.
+ * Zwraca false w przeciwnym wypadku.
+ */
+typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, void* state);
 
 
 typedef struct {
@@ -29,8 +41,9 @@ HeroList* init_hero_list();
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status);
 bool resize_hero_list_if_needed(HeroList* list);
-Hero* find_hero_by_name(HeroList* list, const char* name); 
-
+Hero* find_hero(HeroList* list, HeroFilterFunc filter, void* state); 
+HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, void* state);
+HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, void* state);
 bool delete_hero(HeroList* list, Hero* hero);
 void free_hero_list(HeroList* list);
 bool is_name_avaliable(HeroList* list, const char* name);
