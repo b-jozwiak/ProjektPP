@@ -6,7 +6,7 @@ OBJ_DIR = out/obj
 BIN_DIR = out
 
 SOURCES = src/main.c 
-OBJECTS = $(SOURCES:.c=.o)
+OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
 EXECUTABLE = $(BIN_DIR)/test_program
 
 all: $(EXECUTABLE)
@@ -15,10 +15,13 @@ $(EXECUTABLE): $(OBJECTS) | $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS)
 
 
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+	
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
