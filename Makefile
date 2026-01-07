@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
-SOURCES = /src/main.c 
+SOURCES = src/main.c 
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = test_program
 
