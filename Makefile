@@ -1,9 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
+SRC_DIR = src
+OBJ_DIR = out/obj
+BIN_DIR = out
+
 SOURCES = src/main.c 
 OBJECTS = $(SOURCES:.c=.o)
-EXECUTABLE = test_program
+EXECUTABLE = $(BIN_DIR)/test_program
 
 all: $(EXECUTABLE)
 
