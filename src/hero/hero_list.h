@@ -8,6 +8,8 @@
  * Funkcja filtrujaca bohaterow.
  * Zwraca true, jesli bohater spelnia warunki filtra.
  * Zwraca false w przeciwnym wypadku.
+
+ * void* state - dodatkowy stan przekazywany do funkcji filtrujacej.
  */
 typedef bool (*HeroFilterFunc)(const Hero*, void* state);
 
@@ -15,6 +17,8 @@ typedef bool (*HeroFilterFunc)(const Hero*, void* state);
  * Funkcja porownujaca dwoch bohaterow.
  * Zwraca true, jesli pierwszy bohater powinien byc przed drugim w posortowanej kolejnosci.
  * Zwraca false w przeciwnym wypadku.
+ *
+ * void* state - dodatkowy stan przekazywany do funkcji porownujacej.
  */
 typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, void* state);
 
