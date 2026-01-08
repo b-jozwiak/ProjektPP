@@ -56,6 +56,7 @@ bool is_name_avaliable(HeroList* list, const char* name);
 
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status);
+Hero* add_hero_direct(HeroList* list, Hero* hero);
 bool delete_hero(HeroList* list, Hero* hero);
 bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete);
 

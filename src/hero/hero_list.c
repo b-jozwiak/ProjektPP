@@ -108,13 +108,14 @@ Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_c
     return &list->heroes[list->count - 1];
 }
 
-void add_hero_direct(HeroList* list, Hero* hero) {
+Hero* add_hero_direct(HeroList* list, Hero* hero) {
     if (!resize_hero_list_if_needed(list)) {
-        return;
+        return NULL;
     }
 
     list->heroes[list->count] = *hero;
     list->count++;
+    return &list->heroes[list->count - 1];
 }
 
 Hero* find_hero(HeroList* list, HeroFilterFunc filter, void* state) {
