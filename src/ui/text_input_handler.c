@@ -42,6 +42,7 @@ int read_integer_range(const char* prompt, int min, int max) {
 }
 
 int read_string(const char* prompt, char* buffer, size_t max_length) {
+    clear_input();
     if (prompt != NULL) {
         printf("%s", prompt);
     }
