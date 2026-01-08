@@ -188,7 +188,7 @@ bool delete_hero(HeroList* list, Hero* hero) {
 
     int index = -1;
     for (int i = 0; i < list->count; i++) {
-        if (&list->heroes[i] == hero) {
+        if (strcmp(list->heroes[i].name, hero->name) == 0) {
             index = i;
             break;
         }
