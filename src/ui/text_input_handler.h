@@ -19,7 +19,7 @@ int read_integer(const char* prompt);
  *
  *  Funckaj zwraca wczytana liczba calkowita.
  */
-int read_integer(const char* prompt, int min, int max);
+int read_integer_range(const char* prompt, int min, int max);
 
 /** 
  *  Funckja wczytuje lancuch znakow z wejscia standardowego.

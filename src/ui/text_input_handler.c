@@ -24,7 +24,7 @@ int read_integer(const char* prompt) {
     }
 }
 
-int read_integer(const char* prompt, int min, int max) {
+int read_integer_range(const char* prompt, int min, int max) {
     int value;
     while (1) {
         if (prompt != NULL) {
