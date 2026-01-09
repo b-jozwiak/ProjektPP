@@ -4,12 +4,32 @@
 #include "text_input_handler.h"
 
 const char* HERO_MENU_OPTIONS = "==== Zarzadzanie bohaterami: ====\n"
-                                "1. Wyswietl liste bohaterow.\n"
-                                "2. Wyszukaj bohatera.\n"
-                                "3. Usun bohatera.\n"
+                                "1. Wyswietl obecna liste bohaterow.\n"
+                                "2. Wyszukaj bohaterow.\n"
+                                "3. Sortuj bohaterow.\n"
+                                "4. Usun bohaterow.\n"
                                 "0. Wroc do glownego menu.\n"
                                 "\n"
                                 "Wybierz opcje: ";
+
+HeroList* menu_find_heroes(HeroList* original_list) {
+    printf("Work in progress!");
+    return original_list;
+}
+
+HeroList* menu_sort_heroes(HeroList* original_list) {
+    printf("Work in progress!");
+    return original_list;
+}
+
+void display_heroes(HeroList* list) {
+    HeroListIterator iterator = hero_iterator(current_list);
+    printf("==== Lista zarejestrowanych bohaterow: ====\n");
+    while (has_next_hero(&iterator)) {
+        Hero* hero = get_next_hero(&iterator);
+        print_hero(hero);
+    }
+}
 
 
 void hero_menu(HeroList* hero_list) {
@@ -20,18 +40,25 @@ void hero_menu(HeroList* hero_list) {
 
         switch (choice) {
             case 1:
-                HeroListIterator iterator = hero_iterator(current_list);
-                printf("==== Lista zarejestrowanych bohaterow: ====\n");
-                while (has_next_hero(&iterator)) {
-                    Hero* hero = get_next_hero(&iterator);
-                    print_hero(hero);
-                }
+                display_heroes(current_list)
                 break;
             case 2:
-                printf("Funkcja wyszukiwania bohaterow jeszcze nie zaimplementowana.\n");
+                current_list = menu_find_heroes(current_list);
                 break;
             case 3:
-                printf("Funkcja usuwania bohaterow jeszcze nie zaimplementowana.\n");
+                current_list = menu_sort_heroes(current_list);
+                break;
+            case 4:
+                if (hero_list == current_list) {
+                    printf("Blad! Nie dokonano wyboru bohaterow.");
+                    break;
+                }
+                char* buff = char[4];
+                read_string("Czy napewno chcesz usunac wybranych bohaterow? (t/n)", buff, 4);
+                if (strcmp(buff, "tak") || strcmp(buff, "t") || strcmp(buff, "yes") || strcmp(buff, "y")) {
+                    delete_heroes(hero_list, current_list);
+                    current_list = hero_list;
+                }
                 break;
             case 0:
                 break;
