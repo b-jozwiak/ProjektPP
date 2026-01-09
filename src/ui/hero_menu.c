@@ -3,6 +3,7 @@
 #include "../hero/hero_list.h"
 #include "../io/text_input_handler.h"
 #include "../util/list_utils.h"
+#include "../io/file_handler.h"
 #include <string.h>
 
 const char* HERO_MENU_OPTIONS = "==== Zarzadzanie bohaterami: ====\n"
@@ -173,6 +174,11 @@ void hero_menu(HeroList* hero_list) {
                 if (strcmp(buff, "tak") == 0 || strcmp(buff, "t") == 0 || strcmp(buff, "yes") == 0 || strcmp(buff, "y") == 0) {
                     delete_heroes(hero_list, current_list);
                     current_list = hero_list;
+                }
+                break;
+            case 7:
+                if (!save_list_to_file(current_list)) {
+                    printf("Blad zapisu do pliku.");
                 }
                 break;
             case 0:

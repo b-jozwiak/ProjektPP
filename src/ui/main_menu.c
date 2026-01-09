@@ -3,6 +3,7 @@
 #include "../hero/hero_list.h"
 #include <stdio.h>
 #include "../io/text_input_handler.h"
+#include "../io/file_handler.h"
 #include "../hero/hero.h"
 #include "hero_menu.h"
 #include <string.h>
@@ -49,7 +50,9 @@ void main_menu(HeroList* hero_list) {
                 printf("Funkcja wczytywania bohaterow z pliku jeszcze nie zaimplementowana.\n");
                 break;
             case 4:
-                printf("Funkcja zapisywania bohaterow do pliku jeszcze nie zaimplementowana.\n");
+                if (!save_list_to_file(current_list)) {
+                    printf("Blad zapisu do pliku.");
+                }
                 break;
             case 0:
                 break;
