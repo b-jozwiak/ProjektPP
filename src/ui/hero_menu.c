@@ -160,7 +160,7 @@ void hero_menu(HeroList* hero_list) {
                 current_list = temp_list;
                 break;
             case 5:
-                printf("Funkcja niezaimplementowana")
+                printf("Funkcja niezaimplementowana");
                 break;
             case 6:
                 if (hero_list == current_list) {

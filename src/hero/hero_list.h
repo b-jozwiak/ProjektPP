@@ -26,10 +26,11 @@ typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, const void* state);
 // -------------------------------------------------
 
 typedef struct {
-    Hero *heroes;
+    Hero** heroes;
     int count;
     int capacity;
     int next_id;
+    bool is_root;
 } HeroList;
 
 typedef struct {
@@ -56,7 +57,6 @@ bool is_name_avaliable(HeroList* list, const char* name);
 
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status);
-Hero* add_hero_direct(HeroList* list, Hero* hero);
 bool delete_hero(HeroList* list, Hero* hero);
 bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete);
 

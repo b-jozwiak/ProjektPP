@@ -19,20 +19,18 @@ const char* MENU_OPTIONS = "====== Rejestr Gildii Poszukiwaczy Przygod ======\n"
 
 
 void register_new_hero(HeroList* hero_list) {
-    Hero new_hero;
-
+    char name[MAX_HERO_NAME_LENGTH+1];
     printf("==== Rejestracja nowego bohatera: ====\n");
     do {
-    read_string("Podaj imie bohatera: ", new_hero.name, MAX_HERO_NAME_LENGTH + 1);
-    } while (!is_name_avaliable(hero_list, new_hero.name) && strlen(new_hero.name) > 0 && printf("Imie jest juz zajete lub nieprawidlowe. Sprobuj ponownie.\n"));
+    read_string("Podaj imie bohatera: ", name, MAX_HERO_NAME_LENGTH + 1);
+    } while (!is_name_avaliable(hero_list, name) && strlen(name) > 0 && printf("Imie jest juz zajete lub nieprawidlowe. Sprobuj ponownie.\n"));
 
-    new_hero.race = pick_race();
-    new_hero.hero_class = pick_class();
-    new_hero.experience_level = read_integer_range("Podaj poziom doswiadczenia (min 1): ", 1, 100);
-    new_hero.reputation = read_integer_range("Podaj reputacje (0-100): ", 0, 100);
-    new_hero.status = ACTIVE;
-    add_hero_direct(hero_list, &new_hero);
-    printf("Bohater %s zostal pomyslnie zarejestrowany.\n", new_hero.name);
+    int race = pick_race();
+    int class = pick_class();
+    int experience = read_integer_range("Podaj poziom doswiadczenia (min 1): ", 1, 100);
+    int reputation = read_integer_range("Podaj reputacje (0-100): ", 0, 100);
+    add_hero(hero_list, name, race, class, experience, reputation, ACTIVE);
+    printf("Bohater %s zostal pomyslnie zarejestrowany.\n", name);
 }
 
 void main_menu(HeroList* hero_list) {
