@@ -4,6 +4,8 @@
 #include <string.h>
 #include "text_input_handler.h"
 
+#define FORMAT "%s;%d;%d;%d;%d;%d"
+
 void get_path(const char* prompt, char* buffer) {
 
     do {
@@ -43,5 +45,81 @@ bool save_list_to_file(HeroList* list) {
 }
 
 HeroList* load_list_from_file() {
-    return NULL;
+    char buffer[MAX_FILE_NAME_LENGTH + 1];
+    FILE* file;
+
+    do {
+        get_path("Podaj nazwe pliku do odczytu: ", buffer);
+        file = fopen(buffer, "r");
+    } while (file == NULL && printf("Blad otwierania pliku.\n"));
+
+    char line[512];
+    int expected_count = 0;
+
+        if (!fgets(line, sizeof(line), file)) {
+        printf("Blad odczytu naglowka.\n");
+        fclose(file);
+        return NULL;
+    }
+
+    if (sscanf(line, "HERO_LIST %d", &expected_count) != 1 || expected_count < 0) {
+        printf("Nieprawidlowy format naglowka pliku.\n");
+        fclose(file);
+        return NULL;
+    }
+
+    HeroList* list = init_hero_list();
+    if (!list) {
+        fclose(file);
+        return NULL;
+    }
+
+        for (int i = 0; i < expected_count; i++) {
+        if (!fgets(line, sizeof(line), file)) {
+            printf("Plik zakonczony przedwcześnie.\n");
+            free_hero_list(list);
+            fclose(file);
+            return NULL;
+        }
+
+        char name[MAX_HERO_NAME_LENGTH + 1];
+        int race, hero_class, level, reputation, status;
+
+        // TODO: Znalezc sposob na unikniecie buffer overflow.
+        if (sscanf(
+                line,
+                FORMAT,
+                name,
+                &race,
+                &hero_class,
+                &level,
+                &reputation,
+                &status
+            ) != 6) {
+            printf("Nieprawidlowy rekord w pliku:\n%s\n", line);
+            free_hero_list(list);
+            fclose(file);
+            return NULL;
+        }
+
+        if ((hero_class < 0 || hero_class > 5) || (race < 0 || race > 4) || (status < 0 || status > 4) || (reputation < 0 || reputation > 100) || (level < 1 || level > 100)) {
+            printf("Nieprawidlowe dane bohatera: %s\n", name);
+            free_hero_list(list);
+            fclose(file);
+            return NULL;
+        }
+
+        add_hero(
+            list,
+            name,
+            (HeroRace)race,
+            (HeroClass)hero_class,
+            level,
+            reputation,
+            (HeroStatus)status
+        );
+    }
+
+    fclose(file);
+    return list;
 }
