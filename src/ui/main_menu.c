@@ -21,7 +21,7 @@ const char* MENU_OPTIONS = "====== Rejestr Gildii Poszukiwaczy Przygod ======\n"
 
 void register_new_hero(HeroList* hero_list) {
     char name[MAX_HERO_NAME_LENGTH+1];
-    printf("==== Rejestracja nowego bohatera: ====\n");
+    printf("\n==== Rejestracja nowego bohatera: ====\n\n");
     do {
     read_string("Podaj imie bohatera: ", name, MAX_HERO_NAME_LENGTH + 1);
     } while (!is_name_avaliable(hero_list, name) && strlen(name) > 0 && printf("Imie jest juz zajete lub nieprawidlowe. Sprobuj ponownie.\n"));
@@ -54,18 +54,18 @@ void main_menu(HeroList** list_ptr) {
                     *list_ptr = new_list;
                     free_hero_list(old_list);
                 } else {
-                    printf("Blad wczytu z pliku.");
+                    printf("\n\nBlad wczytu z pliku.\n\n");
                 }
                 break;
             case 4:
                 if (!save_list_to_file(hero_list)) {
-                    printf("Blad zapisu do pliku.");
+                    printf("\n\nBlad zapisu do pliku.\n\n");
                 }
                 break;
             case 0:
                 break;
             default:
-                printf("Nieprawidlowy wybor. Sprobuj ponownie.\n");
+                printf("\n\nNieprawidlowy wybor. Sprobuj ponownie.\n\n");
         }
     } while (choice != 0);
 

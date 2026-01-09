@@ -194,11 +194,11 @@ bool delete_hero(HeroList* list, Hero* hero) {
     }
 
     if (!list->is_root) {
-        printf("Usuwanie bohaterow mozna tylko wykonac na oryginalnej liscie");
+        printf("\n\nUsuwanie bohaterow mozna tylko wykonac na oryginalnej liscie.\n\n");
     }
 
     if (hero->status == ON_QUEST) {
-        printf("Nie mozna wyrejestrowac bohatera, ktory jest na misji.\n");
+        printf("Blad usuwania %s - Nie mozna wyrejestrowac bohatera, ktory jest na misji.\n", hero->name);
         return false;
     }
 
@@ -225,9 +225,7 @@ bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete) {
     HeroListIterator iterator = hero_iterator(subsetToDelete);
     while (has_next_hero(&iterator)) {
         Hero* heroToDelete = get_next_hero(&iterator);
-        if (!delete_hero(originalList, heroToDelete)) {
-            return false;
-        }
+        delete_hero(originalList, heroToDelete)
     }
 
     return true;

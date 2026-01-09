@@ -6,8 +6,8 @@
 #include "../io/file_handler.h"
 #include <string.h>
 
-const char* HERO_MENU_OPTIONS = "==== Zarzadzanie bohaterami: ====\n"
-                                "1. Wyswietl obecna liste bohaterow.\n"
+const char* HERO_MENU_OPTIONS = "\n==== Zarzadzanie bohaterami: ====\n"
+                                "1. Wyswietl obecna liste bohaterow. (%d)\n"
                                 "2. Wyczysc filtry.\n"
                                 "3. Wyszukaj bohaterow.\n"
                                 "4. Sortuj bohaterow.\n"
@@ -17,7 +17,7 @@ const char* HERO_MENU_OPTIONS = "==== Zarzadzanie bohaterami: ====\n"
                                 "0. Wroc do glownego menu.\n"
                                 "\n"
                                 "Wybierz opcje: ";
-const char* HERO_MENU_FIND_OPTIONS = "==== Filtruj bohaterow po: ====\n"
+const char* HERO_MENU_FIND_OPTIONS = "\n==== Filtruj bohaterow po: ====\n"
                                      "1. Imieniu (dopasowanie pelne).\n"
                                      "2. Imeniu (dopasowanie prefixowe).\n"
                                      "3. Powyzej poziomu doswiadczenia.\n"
@@ -31,7 +31,7 @@ const char* HERO_MENU_FIND_OPTIONS = "==== Filtruj bohaterow po: ====\n"
                                      "\n"
                                      "Wybierz opcje: ";
 
-const char* HERO_MENU_SORT_OPTIONS = "==== Sortuj bohaterow po: ====\n"
+const char* HERO_MENU_SORT_OPTIONS = "\n==== Sortuj bohaterow po: ====\n"
                                      "1. Imieniu.\n"
                                      "2. Poziomie.\n"
                                      "3. Reputacji.\n"
@@ -105,11 +105,9 @@ HeroList* menu_find_heroes(HeroList* original_list) {
 }
 
 HeroList* menu_sort_heroes(HeroList* original_list) {
-    printf("Work in progress!");
-
     HeroCompareFunc func;
     HeroCompareFunc functions[] = {NULL, compare_by_name, compare_by_level, compare_by_reputation, compare_by_race, compare_by_class, compare_by_status};
-    bool ascending = false;
+    bool ascending = true;
     int choice = read_integer_range(HERO_MENU_SORT_OPTIONS, 0, 6);
     func = functions[choice];
     if (func == NULL)
@@ -118,7 +116,7 @@ HeroList* menu_sort_heroes(HeroList* original_list) {
     char buff[4];
     read_string("Sortuj rosnaco? (t/n): ", buff, 4);
     if (strcmp(buff, "nie") == 0 || strcmp(buff, "n") == 0 || strcmp(buff, "no") == 0) {
-        ascending = true;
+        ascending = false;
     }
     
     // sort_heroes_in_place(original_list, func, &ascending);
@@ -135,16 +133,22 @@ void display_heroes(HeroList* list) {
     }
 }
 
+const char* print_menu_options(HeroList* list) {
+    printf(HERO_MENU_OPTIONS, list->count);
+    return NULL;
+}
+
 void hero_menu(HeroList* hero_list) {
     HeroList* current_list = hero_list;
     HeroList* temp_list;
     int choice;
     do {
-        choice = read_integer(HERO_MENU_OPTIONS);
+        choice = read_integer(print_menu_options(current_list));
 
         switch (choice) {
             case 1:
                 display_heroes(current_list);
+                printf("\n");
                 break;
             case 2:
                 current_list = hero_list;
@@ -162,15 +166,15 @@ void hero_menu(HeroList* hero_list) {
                 current_list = temp_list;
                 break;
             case 5:
-                printf("Funkcja niezaimplementowana");
+                printf("\n\nFunkcja niezaimplementowana\n\n");
                 break;
             case 6:
                 if (hero_list == current_list) {
-                    printf("Blad! Nie dokonano wyboru bohaterow.");
+                    printf("\n\nBlad! Nie dokonano wyboru bohaterow.\n\n");
                     break;
                 }
                 char buff[4];
-                read_string("Czy napewno chcesz usunac wybranych bohaterow? (t/n)", buff, 4);
+                read_string("\nCzy napewno chcesz usunac wybranych bohaterow? (t/n): ", buff, 4);
                 if (strcmp(buff, "tak") == 0 || strcmp(buff, "t") == 0 || strcmp(buff, "yes") == 0 || strcmp(buff, "y") == 0) {
                     delete_heroes(hero_list, current_list);
                     current_list = hero_list;
@@ -178,13 +182,13 @@ void hero_menu(HeroList* hero_list) {
                 break;
             case 7:
                 if (!save_list_to_file(current_list)) {
-                    printf("Blad zapisu do pliku.");
+                    printf("\n\nBlad zapisu do pliku.\n\n");
                 }
                 break;
             case 0:
                 break;
             default:
-                printf("Nieprawidlowy wybor. Sprobuj ponownie.\n");
+                printf("\n\nNieprawidlowy wybor. Sprobuj ponownie.\n");
         }
     } while (choice != 0);
 }
