@@ -3,6 +3,19 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "../ui/text_input_handler.h"
+
+int pick_race() {
+    return read_integer_range("Wybierz rase (0-Czlowiek, 1-Elf, 2-Krasnolud, 3-Ork, 4-Tiefling): ", 0, 4);
+}
+
+int pick_class() {
+    return read_integer_range("Wybierz klase (0-Wojownik, 1-Mag, 2-Kaplan, 3-Lotrzyk, 4-Lowca, 5-Druid): ", 0, 5);
+}
+
+int pick_status() {
+    return read_integer_range("Wybierz status: (0-Aktywny, 1-Na miscji, 2-Ranny, 3-Zaginiony, 4-Zawieszony): ", 0, 4);
+}
 
 bool find_by_name_exact_filter(const Hero* hero, const void* state) {
     const char* target_name = (const char*)state;

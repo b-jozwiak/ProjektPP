@@ -4,6 +4,10 @@
 #include "../hero/hero.h"
 #include "../hero/hero_list.h"
 
+int pick_race();
+int pick_class();
+int pick_status();
+
 // Filtry po nazwie
 bool find_by_name_exact_filter(const Hero* hero, const void* state);
 bool find_by_name_prefix_filter(const Hero* hero, const void* state);

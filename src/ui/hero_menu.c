@@ -17,7 +17,7 @@ const char* HERO_MENU_OPTIONS = "==== Zarzadzanie bohaterami: ====\n"
 const char* HERO_MENU_FIND_OPTIONS = "==== Filtruj bohaterow po: ====\n"
                                      "1. Imieniu (dopasowanie pelne).\n"
                                      "2. Imeniu (dopasowanie prefixowe).\n"
-                                     "3. Powyzej poziomu poziomu doswiadczenia.\n"
+                                     "3. Powyzej poziomu doswiadczenia.\n"
                                      "4. Ponizej poziomu doswiadczenia.\n"
                                      "5. Powyzej reputacji.\n"
                                      "6. Ponizej reputacji.\n"
@@ -35,6 +35,7 @@ HeroList* menu_find_heroes(HeroList* original_list) {
     const void* state;
     int choice = read_integer_range(HERO_MENU_FIND_OPTIONS, 0, 9);
     char name[MAX_HERO_NAME_LENGTH + 1];
+    int int_value = 0;
     switch(choice) {
         case 0:
             break;
@@ -49,6 +50,39 @@ HeroList* menu_find_heroes(HeroList* original_list) {
             state = name;
             break;
         case 3:
+            func = find_by_level_min;
+            int_value = read_integer_range("Poziom >= ", 1, 100);
+            state = &int_value;
+            break;
+        case 4:
+            func = find_by_level_max;
+            int_value = read_integer_range("Poziom <= ", 1, 100);
+            state = &int_value;
+            break;
+        case 5:
+            func = find_by_reputation_min;
+            int_value = read_integer_range("Reputacja >= ", 1, 100);
+            state = &int_value;
+            break;
+        case 6:
+            func = find_by_level_max;
+            int_value = read_integer_range("Reputacja <= ", 1, 100);
+            state = &int_value;
+            break;
+        case 7:
+            func = find_by_race;
+            int_value = pick_race();
+            state = &int_value;
+            break;
+        case 8:
+            func = find_by_class;
+            int_value = pick_class();
+            state = &int_value;
+            break;
+        case 9:
+            func = find_by_status;
+            int_value = pick_status();
+            state = &int_value;
             break;
     }
 
@@ -84,6 +118,7 @@ void hero_menu(HeroList* hero_list) {
                 break;
             case 2:
                 current_list = hero_list;
+                break;
             case 3:
                 current_list = menu_find_heroes(current_list);
                 break;

@@ -6,6 +6,7 @@
 #include "../hero/hero.h"
 #include "hero_menu.h"
 #include <string.h>
+#include "../util/list_utils.h"
 
 const char* MENU_OPTIONS = "====== Rejestr Gildii Poszukiwaczy Przygod ======\n"
                            "1. Zarejestruj nowego bohatera.\n"
@@ -25,8 +26,8 @@ void register_new_hero(HeroList* hero_list) {
     read_string("Podaj imie bohatera: ", new_hero.name, MAX_HERO_NAME_LENGTH + 1);
     } while (!is_name_avaliable(hero_list, new_hero.name) && strlen(new_hero.name) > 0 && printf("Imie jest juz zajete lub nieprawidlowe. Sprobuj ponownie.\n"));
 
-    new_hero.race = read_integer_range("Wybierz rase (0-Czlowiek, 1-Elf, 2-Krasnolud, 3-Ork, 4-Tiefling): ", 0, 4);
-    new_hero.hero_class = read_integer_range("Wybierz klase (0-Wojownik, 1-Mag, 2-Kaplan, 3-Lotrzyk, 4-Lowca, 5-Druid): ", 0, 5);
+    new_hero.race = pick_race();
+    new_hero.hero_class = pick_class();
     new_hero.experience_level = read_integer_range("Podaj poziom doswiadczenia (min 1): ", 1, 100);
     new_hero.reputation = read_integer_range("Podaj reputacje (0-100): ", 0, 100);
     new_hero.status = ACTIVE;
