@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../hero/hero_list.h"
 #include <stdio.h>
-#include "text_input_handler.h"
+#include "../io/text_input_handler.h"
 #include "../hero/hero.h"
 #include "hero_menu.h"
 #include <string.h>

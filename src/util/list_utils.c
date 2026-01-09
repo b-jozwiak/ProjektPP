@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../ui/text_input_handler.h"
+#include "../io/text_input_handler.h"
 
 int pick_race() {
     return read_integer_range("Wybierz rase (0-Czlowiek, 1-Elf, 2-Krasnolud, 3-Ork, 4-Tiefling): ", 0, 4);

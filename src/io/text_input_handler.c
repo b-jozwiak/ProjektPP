@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "text_input_handler.h"
+#include "../io/text_input_handler.h"
 #include <stdlib.h>
 #include <string.h>
 

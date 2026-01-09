@@ -1,7 +1,7 @@
 #include "hero_menu.h"
 #include <stdio.h>
 #include "../hero/hero_list.h"
-#include "text_input_handler.h"
+#include "../io/text_input_handler.h"
 #include "../util/list_utils.h"
 #include <string.h>
 
@@ -12,6 +12,7 @@ const char* HERO_MENU_OPTIONS = "==== Zarzadzanie bohaterami: ====\n"
                                 "4. Sortuj bohaterow.\n"
                                 "5. Edytuj bohaterow.\n"
                                 "6. Usun bohaterow.\n"
+                                "7. Zapisz wybor do pliku\n"
                                 "0. Wroc do glownego menu.\n"
                                 "\n"
                                 "Wybierz opcje: ";
