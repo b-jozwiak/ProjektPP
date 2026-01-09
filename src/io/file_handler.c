@@ -4,8 +4,6 @@
 #include <string.h>
 #include "text_input_handler.h"
 
-#define FORMAT "%s;%d;%d;%d;%d;%d"
-
 void get_path(const char* prompt, char* buffer) {
 
     do {
@@ -74,7 +72,9 @@ HeroList* load_list_from_file() {
         return NULL;
     }
 
-        for (int i = 0; i < expected_count; i++) {
+    char FORMAT[64];
+    snprintf(FORMAT, sizeof(FORMAT), "%%%ds;%%d;%%d;%%d;%%d;%%d", MAX_HERO_NAME_LENGTH);
+    for (int i = 0; i < expected_count; i++) {
         if (!fgets(line, sizeof(line), file)) {
             printf("Plik zakonczony przedwcześnie.\n");
             free_hero_list(list);
@@ -97,6 +97,7 @@ HeroList* load_list_from_file() {
                 &status
             ) != 6) {
             printf("Nieprawidlowy rekord w pliku:\n%s\n", line);
+            printf("\n\n%s %d %d %d %d %d", name, race, hero_class, level, reputation, status);
             free_hero_list(list);
             fclose(file);
             return NULL;

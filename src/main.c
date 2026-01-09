@@ -14,9 +14,9 @@ int main() {
         return 1;
     }
 
-    add_hero(hero_list, "Ksiadz Nathan", HUMAN, PRIEST, 40, 10, ACTIVE);
-    add_hero(hero_list, "Adam Mickiewicz", HUMAN, DRUID, 10, 60, ACTIVE);
-    add_hero(hero_list, "Orgalorg", ORC, WARRIOR, 80, 99, ON_QUEST);
+    // add_hero(hero_list, "Ksiadz Nathan", HUMAN, PRIEST, 40, 10, ACTIVE);
+    // add_hero(hero_list, "Adam Mickiewicz", HUMAN, DRUID, 10, 60, ACTIVE);
+    // add_hero(hero_list, "Orgalorg", ORC, WARRIOR, 80, 99, ON_QUEST);
 
     main_menu(&hero_list);
 
