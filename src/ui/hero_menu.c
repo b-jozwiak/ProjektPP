@@ -10,7 +10,8 @@ const char* HERO_MENU_OPTIONS = "==== Zarzadzanie bohaterami: ====\n"
                                 "2. Wyczysc filtry.\n"
                                 "3. Wyszukaj bohaterow.\n"
                                 "4. Sortuj bohaterow.\n"
-                                "5. Usun bohaterow.\n"
+                                "5. Edytuj bohaterow.\n"
+                                "6. Usun bohaterow.\n"
                                 "0. Wroc do glownego menu.\n"
                                 "\n"
                                 "Wybierz opcje: ";
@@ -132,7 +133,6 @@ void display_heroes(HeroList* list) {
     }
 }
 
-
 void hero_menu(HeroList* hero_list) {
     HeroList* current_list = hero_list;
     HeroList* temp_list;
@@ -160,6 +160,9 @@ void hero_menu(HeroList* hero_list) {
                 current_list = temp_list;
                 break;
             case 5:
+                printf("Funkcja niezaimplementowana")
+                break;
+            case 6:
                 if (hero_list == current_list) {
                     printf("Blad! Nie dokonano wyboru bohaterow.");
                     break;
