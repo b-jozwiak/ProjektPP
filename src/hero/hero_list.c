@@ -118,7 +118,7 @@ Hero* add_hero_direct(HeroList* list, Hero* hero) {
     return &list->heroes[list->count - 1];
 }
 
-Hero* find_hero(HeroList* list, HeroFilterFunc filter, void* state) {
+Hero* find_hero(HeroList* list, HeroFilterFunc filter, const void* state) {
     HeroListIterator iterator = hero_iterator(list);
     while (has_next_hero(&iterator)) {
         Hero* hero = get_next_hero(&iterator);
@@ -129,7 +129,7 @@ Hero* find_hero(HeroList* list, HeroFilterFunc filter, void* state) {
     return NULL;
 }
 
-HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, void* state) {
+HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, const void* state) {
     if (list == NULL || filter == NULL) {
         return NULL;
     }
@@ -150,7 +150,7 @@ HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, void* state) {
     return filtered_list;
 }
 
-HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, void* state) {
+HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, const void* state) {
     if (list == NULL || compare == NULL) {
         return NULL;
     }

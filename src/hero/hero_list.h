@@ -11,7 +11,7 @@
 
  * void* state - dodatkowy stan przekazywany do funkcji filtrujacej.
  */
-typedef bool (*HeroFilterFunc)(const Hero*, void* state);
+typedef bool (*HeroFilterFunc)(const Hero*, const void* state);
 
 /**
  * Funkcja porownujaca dwoch bohaterow.
@@ -20,7 +20,7 @@ typedef bool (*HeroFilterFunc)(const Hero*, void* state);
  *
  * void* state - dodatkowy stan przekazywany do funkcji porownujacej.
  */
-typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, void* state);
+typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, const void* state);
 
 
 // -------------------------------------------------
@@ -62,9 +62,9 @@ bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete);
 
 // -------------------------------------------------
 
-Hero* find_hero(HeroList* list, HeroFilterFunc filter, void* state); 
-HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, void* state);
-HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, void* state);
+Hero* find_hero(HeroList* list, HeroFilterFunc filter, const void* state); 
+HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, const void* state);
+HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, const void* state);
 
 
 #endif // HERO_LIST_H

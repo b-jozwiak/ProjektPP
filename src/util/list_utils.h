@@ -4,10 +4,24 @@
 #include "../hero/hero.h"
 #include "../hero/hero_list.h"
 
-bool find_by_name_filter(const Hero* hero, void* state);
+// Filtry po nazwie
+bool find_by_name_exact_filter(const Hero* hero, const void* state);
+bool find_by_name_prefix_filter(const Hero* hero, const void* state);
 
-bool find_by_min_level(const Hero* hero, void* state);
+// Filtry po poziomie doświadczenia
+bool find_by_level_min(const Hero* hero, const void* state);
+bool find_by_level_max(const Hero* hero, const void* state);
 
-bool compare_by_level(const Hero* a, const Hero* b, void* state);
+// Filtry po reputacji
+bool find_by_reputation_min(const Hero* hero, const void* state);
+bool find_by_reputation_max(const Hero* hero, const void* state);
+
+// Filtry po rasie, klasie i statusie
+bool find_by_race(const Hero* hero, const void* state);
+bool find_by_class(const Hero* hero, const void* state);
+bool find_by_status(const Hero* hero, const void* state);
+
+// Funkcja porównawcza dla sortowania po poziomie
+bool compare_by_level(const Hero* a, const Hero* b, const void* state);
 
 #endif // LIST_UTILS_H
