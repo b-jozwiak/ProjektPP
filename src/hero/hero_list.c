@@ -177,6 +177,21 @@ HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, const void* state
     return sorted_list;
 }
 
+void sort_heroes_in_place(HeroList* list, HeroCompareFunc compare, const void* state) {
+    if (!list || !compare) return;
+
+    for (int i = 0; i < list->count - 1; i++) {
+        for (int j = 0; j < list->count - i - 1; j++) {
+            if (!compare(&list->heroes[j], &list->heroes[j + 1], state)) {
+                Hero temp = list->heroes[j];
+                list->heroes[j] = list->heroes[j + 1];
+                list->heroes[j + 1] = temp;
+            }
+        }
+    }
+}
+
+
 bool delete_hero(HeroList* list, Hero* hero) {
     if (list == NULL || hero == NULL) {
         return false;

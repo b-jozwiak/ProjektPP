@@ -83,3 +83,41 @@ bool compare_by_level(const Hero* a, const Hero* b, const void* state) {
     }
     return a->experience_level > b->experience_level;
 }
+
+bool compare_by_reputation(const Hero* a, const Hero* b, const void* state) {
+    bool reverse = (state != NULL) ? *(bool*)state : false;
+    if (reverse) {
+        return a->reputation < b->reputation;
+    }
+    return a->reputation > b->reputation;
+}
+
+bool compare_by_status(const Hero* a, const Hero* b, const void* state) {
+    bool reverse = (state != NULL) ? *(bool*)state : false;
+    if (reverse) {
+        return a->status < b->status;
+    }
+    return a->status > b->status;
+}
+
+bool compare_by_name(const Hero* a, const Hero* b, const void* state) {
+    bool reverse = (state != NULL) ? *(bool*)state : false;
+    int cmp = strcmp(a->name, b->name);
+    return reverse ? (cmp > 0) : (cmp < 0);
+}
+
+bool compare_by_race(const Hero* a, const Hero* b, const void* state) {
+    bool reverse = (state != NULL) ? *(bool*)state : false;
+    if (reverse) {
+        return a->race < b->race;
+    }
+    return a->race > b->race;
+}
+
+bool compare_by_class(const Hero* a, const Hero* b, const void* state) {
+    bool reverse = (state != NULL) ? *(bool*)state : false;
+    if (reverse) {
+        return a->hero_class < b->hero_class;
+    }
+    return a->hero_class > b->hero_class;
+}

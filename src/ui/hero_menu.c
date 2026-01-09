@@ -28,6 +28,16 @@ const char* HERO_MENU_FIND_OPTIONS = "==== Filtruj bohaterow po: ====\n"
                                      "\n"
                                      "Wybierz opcje: ";
 
+const char* HERO_MENU_SORT_OPTIONS = "==== Sortuj bohaterow po: ====\n"
+                                     "1. Imieniu.\n"
+                                     "2. Poziomie.\n"
+                                     "3. Reputacji.\n"
+                                     "4. Rasie.\n"
+                                     "5. Klasie.\n"
+                                     "6. Statusie.\n"
+                                     "0. Anuluj.\n"
+                                     "\n"
+                                     "Wybierz opcje: ";
 
 
 HeroList* menu_find_heroes(HeroList* original_list) {
@@ -93,7 +103,24 @@ HeroList* menu_find_heroes(HeroList* original_list) {
 
 HeroList* menu_sort_heroes(HeroList* original_list) {
     printf("Work in progress!");
-    return original_list;
+
+    HeroCompareFunc func;
+    HeroCompareFunc functions[] = {NULL, compare_by_name, compare_by_level, compare_by_reputation, compare_by_race, compare_by_class, compare_by_status};
+    bool ascending = false;
+    int choice = read_integer_range(HERO_MENU_SORT_OPTIONS, 0, 6);
+    func = functions[choice];
+    if (func == NULL)
+        return original_list;
+
+    char buff[4];
+    read_string("Sortuj rosnaco? (t/n): ", buff, 4);
+    if (strcmp(buff, "nie") == 0 || strcmp(buff, "n") == 0 || strcmp(buff, "no") == 0) {
+        ascending = true;
+    }
+    
+    // sort_heroes_in_place(original_list, func, &ascending);
+    // return original_list;
+    return sort_heroes(original_list, func, &ascending);    
 }
 
 void display_heroes(HeroList* list) {
@@ -108,6 +135,7 @@ void display_heroes(HeroList* list) {
 
 void hero_menu(HeroList* hero_list) {
     HeroList* current_list = hero_list;
+    HeroList* temp_list;
     int choice;
     do {
         choice = read_integer(HERO_MENU_OPTIONS);
@@ -120,10 +148,16 @@ void hero_menu(HeroList* hero_list) {
                 current_list = hero_list;
                 break;
             case 3:
-                current_list = menu_find_heroes(current_list);
+                temp_list = menu_find_heroes(current_list);
+                if (current_list != hero_list)
+                    free_hero_list(current_list);
+                current_list = temp_list;
                 break;
             case 4:
-                current_list = menu_sort_heroes(current_list);
+                temp_list = menu_sort_heroes(current_list);
+                if (current_list != hero_list)
+                    free_hero_list(current_list);
+                current_list = temp_list;
                 break;
             case 5:
                 if (hero_list == current_list) {
@@ -132,7 +166,7 @@ void hero_menu(HeroList* hero_list) {
                 }
                 char buff[4];
                 read_string("Czy napewno chcesz usunac wybranych bohaterow? (t/n)", buff, 4);
-                if (strcmp(buff, "tak") || strcmp(buff, "t") || strcmp(buff, "yes") || strcmp(buff, "y")) {
+                if (strcmp(buff, "tak") == 0 || strcmp(buff, "t") == 0 || strcmp(buff, "yes") == 0 || strcmp(buff, "y") == 0) {
                     delete_heroes(hero_list, current_list);
                     current_list = hero_list;
                 }

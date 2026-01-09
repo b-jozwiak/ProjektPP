@@ -66,5 +66,7 @@ Hero* find_hero(HeroList* list, HeroFilterFunc filter, const void* state);
 HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, const void* state);
 HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, const void* state);
 
+void sort_heroes_in_place(HeroList* list, HeroCompareFunc compare, const void* state);
+
 
 #endif // HERO_LIST_H

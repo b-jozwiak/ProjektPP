@@ -25,7 +25,12 @@ bool find_by_race(const Hero* hero, const void* state);
 bool find_by_class(const Hero* hero, const void* state);
 bool find_by_status(const Hero* hero, const void* state);
 
-// Funkcja porównawcza dla sortowania po poziomie
+
 bool compare_by_level(const Hero* a, const Hero* b, const void* state);
+bool compare_by_reputation(const Hero* a, const Hero* b, const void* state);
+bool compare_by_status(const Hero* a, const Hero* b, const void* state);
+bool compare_by_name(const Hero* a, const Hero* b, const void* state);
+bool compare_by_race(const Hero* a, const Hero* b, const void* state);
+bool compare_by_class(const Hero* a, const Hero* b, const void* state);
 
 #endif // LIST_UTILS_H
