@@ -41,3 +41,7 @@ bool save_list_to_file(HeroList* list) {
     fclose(file);
     return true;
 }
+
+HeroList* load_list_from_file() {
+    return NULL;
+}

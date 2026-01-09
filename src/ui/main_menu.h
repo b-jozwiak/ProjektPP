@@ -3,7 +3,7 @@
 
 #include "../hero/hero_list.h"
 
-void main_menu(HeroList* hero_list);
+void main_menu(HeroList** hero_list);
 
 
 #endif // MAIN_MENU_H

@@ -34,9 +34,10 @@ void register_new_hero(HeroList* hero_list) {
     printf("Bohater %s zostal pomyslnie zarejestrowany.\n", name);
 }
 
-void main_menu(HeroList* hero_list) {
+void main_menu(HeroList** list_ptr) {
     int choice;
     do {
+        HeroList* hero_list = *list_ptr;
         choice = read_integer(MENU_OPTIONS);
 
         switch (choice) {
@@ -47,10 +48,17 @@ void main_menu(HeroList* hero_list) {
                 hero_menu(hero_list);
                 break;
             case 3:
-                printf("Funkcja wczytywania bohaterow z pliku jeszcze nie zaimplementowana.\n");
+                HeroList* old_list = hero_list;
+                HeroList* new_list = load_list_from_file();
+                if (new_list != old_list && new_list != NULL) {
+                    *list_ptr = new_list;
+                    free_hero_list(old_list);
+                } else {
+                    printf("Blad wczytu z pliku.");
+                }
                 break;
             case 4:
-                if (!save_list_to_file(current_list)) {
+                if (!save_list_to_file(hero_list)) {
                     printf("Blad zapisu do pliku.");
                 }
                 break;
