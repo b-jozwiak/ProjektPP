@@ -73,7 +73,7 @@ HeroList* load_list_from_file() {
     }
 
     char FORMAT[64];
-    snprintf(FORMAT, sizeof(FORMAT), "%%%ds;%%d;%%d;%%d;%%d;%%d", MAX_HERO_NAME_LENGTH);
+    snprintf(FORMAT, sizeof(FORMAT), "%%%d[^;];%%d;%%d;%%d;%%d;%%d", MAX_HERO_NAME_LENGTH);
     for (int i = 0; i < expected_count; i++) {
         if (!fgets(line, sizeof(line), file)) {
             printf("Plik zakonczony przedwcześnie.\n");
@@ -85,7 +85,6 @@ HeroList* load_list_from_file() {
         char name[MAX_HERO_NAME_LENGTH + 1];
         int race, hero_class, level, reputation, status;
 
-        // TODO: Znalezc sposob na unikniecie buffer overflow.
         if (sscanf(
                 line,
                 FORMAT,
@@ -96,8 +95,8 @@ HeroList* load_list_from_file() {
                 &reputation,
                 &status
             ) != 6) {
-            printf("Nieprawidlowy rekord w pliku:\n%s\n", line);
-            printf("\n\n%s %d %d %d %d %d", name, race, hero_class, level, reputation, status);
+            // printf("Nieprawidlowy rekord w pliku:\n%s\n", line);
+            // printf("\n\n%s %d %d %d %d %d", name, race, hero_class, level, reputation, status);
             free_hero_list(list);
             fclose(file);
             return NULL;
