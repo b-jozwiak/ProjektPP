@@ -184,7 +184,7 @@ bool edit_hero_menu(Hero* hero) {
     return false;
 }
 
-void hero_menu(HeroList* hero_list) {
+void hero_menu(HeroList* hero_list, const char* output_file) {
     HeroList* current_list = hero_list;
     HeroList* temp_list;
     int choice;
@@ -232,7 +232,7 @@ void hero_menu(HeroList* hero_list) {
                 }
                 break;
             case 7:
-                if (!save_list_to_file(current_list, "heroes_output.txt")) {
+                if (!save_list_to_file(current_list, output_file)) {
                     printf("\n\nBlad zapisu do pliku.\n\n");
                 }
                 break;

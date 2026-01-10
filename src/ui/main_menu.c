@@ -46,7 +46,7 @@ void main_menu(HeroList** list_ptr, const char* input_file, const char* output_f
                 register_new_hero(hero_list);
                 break;
             case 2:
-                hero_menu(hero_list);
+                hero_menu(hero_list, output_file);
                 break;
             case 3:
                 HeroList* old_list = hero_list;

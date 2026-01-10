@@ -3,6 +3,6 @@
 
 #include "../hero/hero_list.h"
 
-void hero_menu(HeroList* hero_list);
+void hero_menu(HeroList* hero_list, const char* output_file);
 
 #endif // HERO_MENU_H
