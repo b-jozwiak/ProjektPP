@@ -4,36 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-Hero create_hero(const char* name, HeroRace race, HeroClass hero_class, int experience_level, int reputation, HeroStatus status) {
-    Hero hero;
-    
-    if (name == NULL || strlen(name) == 0 || strlen(name) > MAX_HERO_NAME_LENGTH) {
-        fprintf(stderr, "Blad: Nieprawidlowe imie bohatera.\n");
-        hero.name[0] = '\0';
-        return hero;
-    }
-    
-    if (experience_level < 1) {
-        fprintf(stderr, "Blad: Poziom doswiadczenia musi byc >= 1.\n");
-        experience_level = 1;
-    }
-
-    if (reputation < 0 || reputation > 100) {
-        fprintf(stderr, "Blad: Reputacja musi byc w zakresie 0-100.\n");
-        reputation = 0;
-    }
-    
-    strncpy(hero.name, name, MAX_HERO_NAME_LENGTH);
-    hero.name[MAX_HERO_NAME_LENGTH] = '\0';
-    hero.race = race;
-    hero.hero_class = hero_class;
-    hero.experience_level = experience_level;
-    hero.reputation = reputation;
-    hero.status = status;
-    
-    return hero;
-}
-
 void print_hero_class(HeroClass hero_class) {
     switch (hero_class) {
         case WARRIOR:
