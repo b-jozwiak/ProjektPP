@@ -5,7 +5,7 @@
 
 #define MAX_FILE_NAME_LENGTH 256
 
-bool save_list_to_file(HeroList* list);
-HeroList* load_list_from_file();
+bool save_list_to_file(HeroList* list, const char* file_path);
+HeroList* load_list_from_file(const char* file_path);
 
 #endif // FILE_HANDLER_H

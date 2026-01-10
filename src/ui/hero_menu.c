@@ -232,7 +232,7 @@ void hero_menu(HeroList* hero_list) {
                 }
                 break;
             case 7:
-                if (!save_list_to_file(current_list)) {
+                if (!save_list_to_file(current_list, "heroes_output.txt")) {
                     printf("\n\nBlad zapisu do pliku.\n\n");
                 }
                 break;

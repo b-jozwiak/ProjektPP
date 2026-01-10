@@ -50,7 +50,7 @@ void main_menu(HeroList** list_ptr) {
                 break;
             case 3:
                 HeroList* old_list = hero_list;
-                HeroList* new_list = load_list_from_file();
+                HeroList* new_list = load_list_from_file("heroes_input.txt");
                 if (new_list != old_list && new_list != NULL) {
                     *list_ptr = new_list;
                     free_hero_list(old_list);
@@ -59,7 +59,7 @@ void main_menu(HeroList** list_ptr) {
                 }
                 break;
             case 4:
-                if (!save_list_to_file(hero_list)) {
+                if (!save_list_to_file(hero_list, "heroes_output.txt")) {
                     printf("\n\nBlad zapisu do pliku.\n\n");
                 }
                 break;
