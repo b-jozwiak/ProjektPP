@@ -198,6 +198,9 @@ void hero_menu(HeroList* hero_list, const char* output_file) {
                 printf("\n");
                 break;
             case 2:
+                if (current_list != hero_list) {
+                    free_hero_list(current_list);
+                }
                 current_list = hero_list;
                 break;
             case 3:
@@ -220,14 +223,16 @@ void hero_menu(HeroList* hero_list, const char* output_file) {
                 }
                 break;
             case 6:
-                if (hero_list == current_list) {
-                    printf("\n\nBlad! Nie dokonano wyboru bohaterow.\n\n");
-                    break;
+                if (hero_list == current_list || hero_list->count == current_list->count) {
+                    printf("\n\nUwaga! Operujesz na calej liscie, nie podzbiorze..\n\n");
                 }
                 char buff[4];
                 read_string("\nCzy napewno chcesz usunac wybranych bohaterow? (t/n): ", buff, 4);
                 if (strcmp(buff, "tak") == 0 || strcmp(buff, "t") == 0 || strcmp(buff, "yes") == 0 || strcmp(buff, "y") == 0) {
                     delete_heroes(hero_list, current_list);
+                    if (current_list != hero_list) {
+                        free_hero_list(current_list);
+                    }
                     current_list = hero_list;
                 }
                 break;
@@ -237,6 +242,9 @@ void hero_menu(HeroList* hero_list, const char* output_file) {
                 }
                 break;
             case 0:
+                if (current_list != hero_list) {
+                    free_hero_list(current_list);
+                }
                 break;
             default:
                 printf("\n\nNieprawidlowy wybor. Sprobuj ponownie.\n");
