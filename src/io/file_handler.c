@@ -4,6 +4,9 @@
 #include <string.h>
 #include "text_input_handler.h"
 
+#define LINE_BUFFER_SIZE 512
+#define FORMAT_BUFFER_SIZE 64
+
 
 bool save_list_to_file(HeroList* list, const char* file_path) {
     if (list == NULL || file_path == NULL) return false;
@@ -47,7 +50,7 @@ HeroList* load_list_from_file(const char* file_path) {
         return NULL;
     }
 
-    char line[512];
+    char line[LINE_BUFFER_SIZE];
     int expected_count = 0;
 
         if (!fgets(line, sizeof(line), file)) {
@@ -68,8 +71,8 @@ HeroList* load_list_from_file(const char* file_path) {
         return NULL;
     }
 
-    char FORMAT[64];
-    snprintf(FORMAT, sizeof(FORMAT), "%%%d[^;];%%d;%%d;%%d;%%d;%%d", MAX_HERO_NAME_LENGTH);
+    char FORMAT[FORMAT_BUFFER_SIZE];
+    snprintf(FORMAT, FORMAT_BUFFER_SIZE, "%%%d[^;];%%d;%%d;%%d;%%d;%%d", MAX_HERO_NAME_LENGTH);
     for (int i = 0; i < expected_count; i++) {
         if (!fgets(line, sizeof(line), file)) {
             printf("Plik zakonczony przedwcześnie.\n");
