@@ -237,7 +237,7 @@ void hero_menu(HeroList* hero_list, const char* output_file) {
                 }
                 break;
             case 7:
-                if (!save_list_to_file(current_list, output_file)) {
+                if (save_list_to_file(current_list, output_file) != FILE_OK) {
                     printf("\n\nBlad zapisu do pliku.\n\n");
                 } else {
                     printf("\n\nZapis dokonano pomyslnie.\n\n");
