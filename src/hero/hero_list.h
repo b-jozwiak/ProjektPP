@@ -30,7 +30,7 @@ typedef struct {
     int count;
     int capacity;
     int next_id;
-    bool is_root;
+    bool is_root;  // true = glowna lista (uwalnia pamieć bohaterów), false = widok na glowna liste (nie uwalnia)
 } HeroList;
 
 typedef struct {
@@ -55,6 +55,7 @@ bool is_name_avaliable(HeroList* list, const char* name);
 
 // -------------------------------------------------
 
+// Bohaterów można dodawać tylko do głównej listy (is_root == true)
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status);
 bool delete_hero(HeroList* list, Hero* hero);

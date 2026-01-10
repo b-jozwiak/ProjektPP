@@ -102,6 +102,13 @@ bool is_name_avaliable(HeroList* list, const char* name) {
 
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status) {
+    if (list == NULL) {
+        return NULL;
+    }
+    if (list->is_root == false) {
+        printf("\n\nDodawanie bohaterow mozna tylko wykonac na oryginalnej liscie.\n\n");
+        return NULL;
+    }
     if (!resize_hero_list_if_needed(list)) {
         return NULL;
     }
@@ -113,6 +120,10 @@ Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_c
     return new_hero;
 }
 
+/**
+ * Dodaje istniejacego bohatera do listy bez tworzenia nowego obiektu.
+ * Uzywane przy tworzeniu "widokow" na glowna liste.
+ */
 Hero* add_hero_direct(HeroList* list, Hero* hero) {
     if (!resize_hero_list_if_needed(list)) {
         return NULL;
