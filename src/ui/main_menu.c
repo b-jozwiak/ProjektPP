@@ -54,6 +54,7 @@ void main_menu(HeroList** list_ptr, const char* input_file, const char* output_f
                 if (new_list != old_list && new_list != NULL) {
                     *list_ptr = new_list;
                     free_hero_list(old_list);
+                    printf("\n\nWczytanie dokonano pomyslnie.\n\n");
                 } else {
                     printf("\n\nBlad wczytu z pliku.\n\n");
                 }
@@ -61,6 +62,8 @@ void main_menu(HeroList** list_ptr, const char* input_file, const char* output_f
             case 4:
                 if (!save_list_to_file(hero_list, output_file)) {
                     printf("\n\nBlad zapisu do pliku.\n\n");
+                } else {
+                    printf("\n\nZapis dokonano pomyslnie.\n\n");
                 }
                 break;
             case 0:
