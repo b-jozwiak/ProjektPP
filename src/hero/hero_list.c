@@ -151,7 +151,7 @@ Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_c
 
 /**
  * Dodaje istniejacego bohatera do listy bez tworzenia nowego obiektu.
- * Uzywane przy tworzeniu "widokow" na glowna liste.
+ * Uzywane przy tworzeniu podzbiorów głównej listy.
  */
 Hero* add_hero_direct(HeroList* list, Hero* hero) {
     if (!resize_hero_list_if_needed(list)) {
