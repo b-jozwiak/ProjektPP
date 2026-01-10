@@ -67,8 +67,11 @@ FileErrorCode file_exists(const char* file_path);
  * char* output - Bufor na wczytaną ścieżkę (musi mieć rozmiar co najmniej MAX_FILE_NAME_LENGTH +1).
  * 
  * Jeśli użytkownik wciśnie Enter bez wpisania nic, używana jest domyślna ścieżka.
+ * Sprawdza poprawność ścieżki (zabronione znaki, sama spacja itp).
+ * 
+ * Funkcja zwraca FILE_OK jeśli sukces, FILE_ERROR_INVALID_POINTER lub FILE_ERROR_OPEN jeśli błąd.
  * Wynik jest umieszczany w buforze output.
  */
-void get_path_or_default(const char* prompt, const char* default_path, char* output);
+FileErrorCode get_path_or_default(const char* prompt, const char* default_path, char* output);
 
 #endif // FILE_HANDLER_H

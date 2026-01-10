@@ -136,19 +136,75 @@ FileErrorCode load_list_from_file(const char* file_path, HeroList** out_list) {
     return FILE_OK;
 }
 
-void get_path_or_default(const char* prompt, const char* default_path, char* output) {
+int is_path_valid(const char* path) {
+    if (path == NULL || strlen(path) == 0) {
+        return 0;
+    }
+
+    int is_whitespace_only = 1;
+    for (int i = 0; path[i] != '\0'; i++) {
+        if (path[i] != ' ' && path[i] != '\t' && path[i] != '\n' && path[i] != '\r') {
+            is_whitespace_only = 0;
+            break;
+        }
+    }
+
+    if (is_whitespace_only) {
+        return 0;
+    }
+
+    const char* forbidden = "<>:\"|?*";
+    for (int i = 0; path[i] != '\0'; i++) {
+        for (int j = 0; forbidden[j] != '\0'; j++) {
+            if (path[i] == forbidden[j]) {
+                printf("Blad: Sciezka zawiera niedozwolony znak '%c'.\n", path[i]);
+                return 0;
+            }
+        }
+    }
+
+    return 1;
+}
+
+void trim_path(char* str) {
+    if (str == NULL) return;
+
+    int start = 0;
+    while (str[start] != '\0' && (str[start] == ' ' || str[start] == '\t')) {
+        start++;
+    }
+
+    int end = strlen(str) - 1;
+    while (end >= start && (str[end] == ' ' || str[end] == '\t')) {
+        end--;
+    }
+
+    int j = 0;
+    for (int i = start; i <= end; i++) {
+        str[j++] = str[i];
+    }
+    str[j] = '\0';
+}
+
+FileErrorCode get_path_or_default(const char* prompt, const char* default_path, char* output) {
     if (prompt == NULL || default_path == NULL || output == NULL) {
-        return;
+        return FILE_ERROR_INVALID_POINTER;
     }
 
     char buffer[MAX_FILE_NAME_LENGTH + 1];
     read_string(prompt, buffer, MAX_FILE_NAME_LENGTH + 1);
 
-    if (strlen(buffer) == 0) {
-        strncpy(output, default_path, MAX_FILE_NAME_LENGTH);
-        output[MAX_FILE_NAME_LENGTH] = '\0';
-    } else {
-        strncpy(output, buffer, MAX_FILE_NAME_LENGTH);
-        output[MAX_FILE_NAME_LENGTH] = '\0';
+    trim_path(buffer);
+
+    const char* path_to_use = (strlen(buffer) == 0) ? default_path : buffer;
+
+    if (!is_path_valid(path_to_use)) {
+        printf("Blad: Nieprawidlowa sciezka do pliku.\n");
+        return FILE_ERROR_OPEN;
     }
+
+    strncpy(output, path_to_use, MAX_FILE_NAME_LENGTH);
+    output[MAX_FILE_NAME_LENGTH] = '\0';
+
+    return FILE_OK;
 }

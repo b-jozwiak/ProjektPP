@@ -238,7 +238,11 @@ void hero_menu(HeroList* hero_list, const char* output_file) {
                 break;
             case 7:
                 char buffer[MAX_FILE_NAME_LENGTH+1];
-                get_path_or_default("Podaj sciezke zapisu podzbioru (lub wcisnij enter dla domyslnej): ", output_file, buffer);
+                FileErrorCode path_err = get_path_or_default("Podaj sciezke zapisu podzbioru (lub wcisnij enter dla domyslnej): ", output_file, buffer);
+                if (path_err != FILE_OK) {
+                    printf("\n\nBlad: Nieprawidlowa sciezka do pliku.\n\n");
+                    break;
+                }
                 if (save_list_to_file(current_list, buffer) != FILE_OK) {
                     printf("\n\nBlad zapisu do pliku.\n\n");
                 } else {
