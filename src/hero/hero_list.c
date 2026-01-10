@@ -225,7 +225,7 @@ bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete) {
     HeroListIterator iterator = hero_iterator(subsetToDelete);
     while (has_next_hero(&iterator)) {
         Hero* heroToDelete = get_next_hero(&iterator);
-        delete_hero(originalList, heroToDelete)
+        delete_hero(originalList, heroToDelete);
     }
 
     return true;

@@ -14,6 +14,7 @@ const char* MENU_OPTIONS = "====== Rejestr Gildii Poszukiwaczy Przygod ======\n"
                            "2. Zarzadzaj bohaterami.\n"
                            "3. Wczytaj bohaterow z pliku.\n"
                            "4. Zapisz bohaterow do pliku.\n"
+                           "\n"
                            "0. Zamknij program.\n"
                            "\n"
                            "Wybierz opcje: ";

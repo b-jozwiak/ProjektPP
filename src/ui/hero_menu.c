@@ -14,6 +14,7 @@ const char* HERO_MENU_OPTIONS = "\n==== Zarzadzanie bohaterami: ====\n"
                                 "5. Edytuj bohaterow.\n"
                                 "6. Usun bohaterow.\n"
                                 "7. Zapisz wybor do pliku\n"
+                                "\n"
                                 "0. Wroc do glownego menu.\n"
                                 "\n"
                                 "Wybierz opcje: ";
@@ -27,6 +28,7 @@ const char* HERO_MENU_FIND_OPTIONS = "\n==== Filtruj bohaterow po: ====\n"
                                      "7. Rasie.\n"
                                      "8. Klasie.\n"
                                      "9. Statusie\n"
+                                     "\n"
                                      "0. Anuluj.\n"
                                      "\n"
                                      "Wybierz opcje: ";
@@ -38,6 +40,19 @@ const char* HERO_MENU_SORT_OPTIONS = "\n==== Sortuj bohaterow po: ====\n"
                                      "4. Rasie.\n"
                                      "5. Klasie.\n"
                                      "6. Statusie.\n"
+                                     "\n"
+                                     "0. Anuluj.\n"
+                                     "\n"
+                                     "Wybierz opcje: ";
+
+const char* HERO_EDIT_MENU_OPTIONS = "\n==== Edytuj: ====\n"
+                                     "1. Poziom.\n"
+                                     "2. Reputacje.\n"
+                                     "3. Status. \n"
+                                     "4. Klase.\n"
+                                     "5. Rase.\n"
+                                     "\n"
+                                     "6. Przejdz do nastepnego bohatera w liscie.\n"
                                      "0. Anuluj.\n"
                                      "\n"
                                      "Wybierz opcje: ";
@@ -138,12 +153,44 @@ const char* print_menu_options(HeroList* list) {
     return NULL;
 }
 
+bool edit_hero_menu(Hero* hero) {
+    int choice;
+
+    do {
+        print_hero(hero);
+        choice = read_integer_range(HERO_EDIT_MENU_OPTIONS, 0, 6);
+        switch (choice) {
+            case 1:
+                hero->experience_level = read_integer_range("Nowy poziom: ", 1, 100);
+                break;
+            case 2:
+                hero->reputation = read_integer_range("Nowa reputacja: ", 1, 100);
+                break;
+            case 3:
+                hero->status = pick_status();
+                break;
+            case 4:
+                hero->hero_class = pick_class();
+                break;
+            case 5:
+                hero->race = pick_race();
+                break;
+            case 6: 
+                return true;
+                break;
+        }
+    } while(choice != 0);
+
+    return false;
+}
+
 void hero_menu(HeroList* hero_list) {
     HeroList* current_list = hero_list;
     HeroList* temp_list;
     int choice;
     do {
-        choice = read_integer(print_menu_options(current_list));
+        print_menu_options(current_list);
+        choice = read_integer(NULL);
 
         switch (choice) {
             case 1:
@@ -166,7 +213,11 @@ void hero_menu(HeroList* hero_list) {
                 current_list = temp_list;
                 break;
             case 5:
-                printf("\n\nFunkcja niezaimplementowana\n\n");
+                HeroListIterator iterator = hero_iterator(current_list);
+                bool exit = false;
+                while (has_next_hero(&iterator) && !exit) {
+                    exit = !edit_hero_menu(get_next_hero(&iterator));
+                }
                 break;
             case 6:
                 if (hero_list == current_list) {
