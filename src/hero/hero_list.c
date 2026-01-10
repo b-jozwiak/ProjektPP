@@ -29,7 +29,6 @@ HeroList* init_hero_list() {
     }
     list->capacity = 10;
     list->count = 0;
-    list->next_id = 1;
     list->heroes = malloc(sizeof(Hero*) * list->capacity);
     list->is_root = true;
 
