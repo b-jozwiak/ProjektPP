@@ -114,7 +114,14 @@ FileErrorCode load_list_from_file(const char* file_path, HeroList** out_list) {
         }
 
         if ((hero_class < 0 || hero_class > 5) || (race < 0 || race > 4) || (status < 0 || status > 4) || (reputation < 0 || reputation > 100) || (level < 1 || level > 100)) {
-            printf("Nieprawidlowe dane bohatera: %s\n", name);
+            printf("Nieprawidlowe dane bohatera (Linia: %d): %s\n", i+2, name);
+            free_hero_list(list);
+            fclose(file);
+            return FILE_ERROR_INVALID_DATA;
+        }
+
+        if (!is_name_avaliable(list, name)) {
+            printf("Nieunikalne imie bohatera (Linia %d): %s\n", i+2, name);
             free_hero_list(list);
             fclose(file);
             return FILE_ERROR_INVALID_DATA;
