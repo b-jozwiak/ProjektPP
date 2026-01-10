@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     // add_hero(hero_list, "Adam Mickiewicz", HUMAN, DRUID, 10, 60, ACTIVE);
     // add_hero(hero_list, "Orgalorg", ORC, WARRIOR, 80, 99, ON_QUEST);
 
-    main_menu(&hero_list);
+    main_menu(&hero_list, data_file, output_file);
 
 
     free_hero_list(hero_list);
