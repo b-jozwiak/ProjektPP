@@ -7,7 +7,6 @@
 #define LINE_BUFFER_SIZE 512
 #define FORMAT_BUFFER_SIZE 64
 
-
 FileErrorCode file_exists(const char* file_path) {
     if (file_path == NULL) {
         return FILE_ERROR_INVALID_POINTER;
@@ -135,4 +134,21 @@ FileErrorCode load_list_from_file(const char* file_path, HeroList** out_list) {
     fclose(file);
     *out_list = list;
     return FILE_OK;
+}
+
+void get_path_or_default(const char* prompt, const char* default_path, char* output) {
+    if (prompt == NULL || default_path == NULL || output == NULL) {
+        return;
+    }
+
+    char buffer[MAX_FILE_NAME_LENGTH + 1];
+    read_string(prompt, buffer, MAX_FILE_NAME_LENGTH + 1);
+
+    if (strlen(buffer) == 0) {
+        strncpy(output, default_path, MAX_FILE_NAME_LENGTH);
+        output[MAX_FILE_NAME_LENGTH] = '\0';
+    } else {
+        strncpy(output, buffer, MAX_FILE_NAME_LENGTH);
+        output[MAX_FILE_NAME_LENGTH] = '\0';
+    }
 }

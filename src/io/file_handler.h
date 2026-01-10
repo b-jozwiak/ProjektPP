@@ -59,4 +59,16 @@ FileErrorCode load_list_from_file(const char* file_path, HeroList** out_list);
  */
 FileErrorCode file_exists(const char* file_path);
 
+/**
+ * Wczytuje ścieżkę do pliku od użytkownika z opcją domyślną.
+ *
+ * const char* prompt - Pytanie wyświetlane użytkownikowi.
+ * const char* default_path - Domyślna ścieżka (jeśli użytkownik wciśnie Enter).
+ * char* output - Bufor na wczytaną ścieżkę (musi mieć rozmiar co najmniej MAX_FILE_NAME_LENGTH +1).
+ * 
+ * Jeśli użytkownik wciśnie Enter bez wpisania nic, używana jest domyślna ścieżka.
+ * Wynik jest umieszczany w buforze output.
+ */
+void get_path_or_default(const char* prompt, const char* default_path, char* output);
+
 #endif // FILE_HANDLER_H
