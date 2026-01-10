@@ -7,7 +7,7 @@ BIN_DIR = out
 
 SOURCES = $(shell find $(SRC_DIR) -name '*.c')
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
-EXECUTABLE = $(BIN_DIR)/test_program
+EXECUTABLE = $(BIN_DIR)/rejestr
 
 all: $(EXECUTABLE)
 
