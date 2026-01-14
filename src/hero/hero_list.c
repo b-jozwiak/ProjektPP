@@ -6,18 +6,21 @@
 // -------------------------------------------------
 
 HeroListIterator hero_iterator(HeroList* list) {
-    HeroListIterator iterator = {list, 0};
+    HeroListIterator iterator = {list->head};
     return iterator;
+}
 
-}
 bool has_next_hero(HeroListIterator* iterator) {
-    return iterator->current_index < iterator->list->count;
+    return iterator->current_node != NULL;
 }
+
 Hero* get_next_hero(HeroListIterator* iterator) {
     if (!has_next_hero(iterator)) {
         return NULL;
     }
-    return iterator->list->heroes[iterator->current_index++];
+    Hero* hero = iterator->current_node->hero;
+    iterator->current_node = iterator->current_node->next;
+    return hero;
 }
 
 // -------------------------------------------------
@@ -27,44 +30,27 @@ HeroList* init_hero_list() {
     if (list == NULL) {
         return NULL;
     }
-    list->capacity = 10;
+    list->head = NULL;
     list->count = 0;
-    list->heroes = malloc(sizeof(Hero*) * list->capacity);
     list->is_root = true;
-
-    if (list->heroes == NULL) {
-        free(list);
-        return NULL;
-    }
 
     return list;
 }
 
 void free_hero_list(HeroList* list) {
     if (list != NULL) {
-        if (list->is_root) {
-            for (int i = 0; i < list->count; i++) {
-                free(list->heroes[i]);
+        HeroNode* current = list->head;
+        while (current != NULL) {
+            HeroNode* temp = current;
+            current = current->next;
+            
+            if (list->is_root) {
+                free(temp->hero);
             }
+            free(temp);
         }
-        free(list->heroes);
         free(list);
     }
-}
-
-bool resize_hero_list_if_needed(HeroList* list) {
-    if (list->count >= list->capacity) {
-        int new_capacity = list->capacity * 2;
-        Hero** temp = realloc(list->heroes, sizeof(Hero*) * new_capacity);
-        if (temp == NULL) {
-            fprintf(stderr, "Blad powiekszenia listy bohaterow.\n");
-            return false;
-        }
-        list->heroes = temp;
-        list->capacity = new_capacity;
-    }
-
-    return true;
 }
 
 // -------------------------------------------------
@@ -138,14 +124,34 @@ Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_c
         printf("\n\nDodawanie bohaterow mozna tylko wykonac na oryginalnej liscie.\n\n");
         return NULL;
     }
-    if (!resize_hero_list_if_needed(list)) {
-        return NULL;
-    }
 
     Hero* new_hero = malloc(sizeof(Hero));
-    if (new_hero == NULL) return NULL;
+    if (new_hero == NULL) {
+        return NULL;
+    }
+    
     *new_hero = create_hero(name, race, hero_class, experience_level, reputation, status);
-    list->heroes[list->count++] = new_hero;
+    
+    HeroNode* new_node = malloc(sizeof(HeroNode));
+    if (new_node == NULL) {
+        free(new_hero);
+        return NULL;
+    }
+    
+    new_node->hero = new_hero;
+    new_node->next = NULL;
+    
+    if (list->head == NULL) {
+        list->head = new_node;
+    } else {
+        HeroNode* current = list->head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = new_node;
+    }
+    
+    list->count++;
     return new_hero;
 }
 
@@ -154,11 +160,29 @@ Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_c
  * Uzywane przy tworzeniu podzbiorów głównej listy.
  */
 Hero* add_hero_direct(HeroList* list, Hero* hero) {
-    if (!resize_hero_list_if_needed(list)) {
+    if (list == NULL || hero == NULL) {
         return NULL;
     }
-
-    list->heroes[list->count++] = hero;
+    
+    HeroNode* new_node = malloc(sizeof(HeroNode));
+    if (new_node == NULL) {
+        return NULL;
+    }
+    
+    new_node->hero = hero;
+    new_node->next = NULL;
+    
+    if (list->head == NULL) {
+        list->head = new_node;
+    } else {
+        HeroNode* current = list->head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = new_node;
+    }
+    
+    list->count++;
     return hero;
 }
 
@@ -198,12 +222,13 @@ HeroList* filter_heroes(HeroList* list, HeroFilterFunc filter, const void* state
 void sort_heroes_in_place(HeroList* list, HeroCompareFunc compare, const void* state) {
     if (!list || !compare) return;
 
-    for (int i = 0; i < list->count - 1; i++) {
-        for (int j = 0; j < list->count - i - 1; j++) {
-            if (!compare(list->heroes[j], list->heroes[j + 1], state)) {
-                Hero* temp = list->heroes[j];
-                list->heroes[j] = list->heroes[j + 1];
-                list->heroes[j + 1] = temp;
+    for (HeroNode* i = list->head; i != NULL; i = i->next) {
+        for (HeroNode* j = list->head; j->next != NULL; j = j->next) {
+            if (!compare(j->hero, j->next->hero, state)) {
+                // Swap hero pointers
+                Hero* temp = j->hero;
+                j->hero = j->next->hero;
+                j->next->hero = temp;
             }
         }
     }
@@ -220,8 +245,10 @@ HeroList* sort_heroes(HeroList* list, HeroCompareFunc compare, const void* state
     }
     sorted_list->is_root = false;
 
-    for (int i = 0; i < list->count; i++) {
-        add_hero_direct(sorted_list, list->heroes[i]);
+    HeroListIterator iterator = hero_iterator(list);
+    while (has_next_hero(&iterator)) {
+        Hero* hero = get_next_hero(&iterator);
+        add_hero_direct(sorted_list, hero);
     }
 
     sort_heroes_in_place(sorted_list, compare, state);
@@ -235,6 +262,7 @@ bool delete_hero(HeroList* list, Hero* hero) {
 
     if (!list->is_root) {
         printf("\n\nUsuwanie bohaterow mozna tylko wykonac na oryginalnej liscie.\n\n");
+        return false;
     }
 
     if (hero->status == ON_QUEST) {
@@ -242,19 +270,27 @@ bool delete_hero(HeroList* list, Hero* hero) {
         return false;
     }
 
-    for (int i = 0; i < list->count; i++) {
-        if (list->heroes[i] == hero) {
-            free(hero);
+    if (list->head->hero == hero) {
+        HeroNode* temp = list->head;
+        list->head = list->head->next;
+        free(hero);
+        free(temp);
+        list->count--;
+        return true;
+    }
 
-            for (int j = i; j < list->count - 1; j++) {
-                list->heroes[j] = list->heroes[j + 1];
-            }
+    for (HeroNode* current = list->head; current->next != NULL; current = current->next) {
+        if (current->next->hero == hero) {
+            HeroNode* temp = current->next;
+            current->next = current->next->next;
+            free(hero);
+            free(temp);
             list->count--;
             return true;
         }
     }
 
-    return true;
+    return false;
 }
 
 bool delete_heroes(HeroList* originalList, HeroList* subsetToDelete) {

@@ -27,17 +27,24 @@ typedef bool (*HeroFilterFunc)(const Hero*, const void* state);
 typedef bool (*HeroCompareFunc)(const Hero*, const Hero*, const void* state);
 
 /**
- * Struktura reprezentująca dynamiczną listę bohaterów.
- * Obsługuje wskaźniki do bohaterów, zarządzanie rozmiarem i pojemnością.
+ * Węzeł listy powiązanej do przechowywania wskaźnika do bohatera.
+ */
+typedef struct HeroNode {
+    Hero* hero;                 // Wskaźnik do bohatera
+    struct HeroNode* next;      // Wskaźnik do następnego węzła
+} HeroNode;
+
+/**
+ * Struktura reprezentująca listę powiązaną bohaterów.
+ * Obsługuje wskaźniki do bohaterów bez tworzenia kopii.
  * 
  * is_root:
  *   - true = główna lista (uwalnia pamięć bohaterów w free_hero_list)
  *   - false = podzbiór głównej listy (nie uwalnia bohaterów)
  */
 typedef struct {
-    Hero** heroes;      // Tablica wskaźników do bohaterów
+    HeroNode* head;     // Wskaźnik na pierwszy węzeł
     int count;          // Liczba bohaterów w liście
-    int capacity;       // Pojemność przydzielonej tablicy
     bool is_root;       // true = główna lista (uwalna bohaterów), false = podzbiór
 } HeroList;
 
@@ -45,8 +52,7 @@ typedef struct {
  * Struktura iteratora do przechodzenia po liście bohaterów.
  */
 typedef struct {
-    HeroList* list;         // Wskaźnik na listę
-    int current_index;      // Bieżący indeks w iteracji
+    HeroNode* current_node;     // Wskaźnik na bieżący węzeł
 } HeroListIterator;
 
 
@@ -79,6 +85,8 @@ bool has_next_hero(HeroListIterator* iterator);
  * Funkcja zwraca wskaźnik do kolejnego bohatera lub NULL jeśli koniec listy.
  */
 Hero* get_next_hero(HeroListIterator* iterator);
+
+// -------------------------------------------------
 
 // -------------------------------------------------
 
