@@ -214,8 +214,7 @@ Legolas;1;4;45;90;0
 ## Implementacja
 
 ### Dynamiczna lista bohaterów
-- Początkowa pojemność: 10 bohaterów
-- Automatyczne rozszerzenie (2x) gdy pełna
+- Lista łączona
 - Dynamiczna alokacja pamięci (`malloc`/`realloc`)
 
 ### System filtrowania i sortowania
@@ -232,7 +231,7 @@ Legolas;1;4;45;90;0
 
 ## Dokumentacja kodu
 
-Wszystkie publiczne funkcje są udokumentowane w plikach nagłówkowych (.h) w formacie:
+Wszystkie publiczne funkcje publiczne są udokumentowane w plikach nagłówkowych (.h) w formacie:
 
 ```c
 /**
