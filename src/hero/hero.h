@@ -42,7 +42,25 @@ typedef struct {
     HeroStatus status;                     // Status dostępności
 } Hero;
 
+/**
+ * Funkcja tworząca bohatera
+ *
+ * const char* name - Imie bohatera, maksymalna długość 50 znaków + terminator (51 byteów)
+ * HeroRace race - rasa bohatera
+ * HeroClass hero_class - klasa bohatera
+ * int experience_level - wartość w zakresie < 1 : 100 >
+ * int reputation - wartość w zakresie < 0 ; 100 >
+ * HeroStatus status - status bohatera
+ */
+Hero* create_hero(const char* name, HeroRace race, HeroClass hero_class, int experience_level, int reputation, HeroStatus status);
 
+/**
+ * Funkcja uwalnia pamięć danego bohatera.
+ *
+ * - na razie ekwialentne do pisania free(hero).
+ * Przyszłościowo może się zmienić struktura bohatera.
+ */
+void free_hero(Hero* hero);
 
 /**
  * Funkcja wyświetlająca informacje o bohaterze.

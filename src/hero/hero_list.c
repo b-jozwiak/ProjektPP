@@ -1,4 +1,5 @@
 #include "hero_list.h"
+#include "hero.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,6 +24,10 @@ Hero* get_next_hero(HeroListIterator* iterator) {
     return hero;
 }
 
+void free_list_node(HeroNode* node) {
+    free(node);
+}
+
 // -------------------------------------------------
 
 HeroList* init_hero_list() {
@@ -45,9 +50,9 @@ void free_hero_list(HeroList* list) {
             current = current->next;
             
             if (list->is_root) {
-                free(temp->hero);
+                free_hero(temp->hero);
             }
-            free(temp);
+            free_list_node(temp);
         }
         free(list);
     }
@@ -85,36 +90,6 @@ bool is_name_avaliable(HeroList* list, const char* name) {
 
 // -------------------------------------------------
 
-Hero create_hero(const char* name, HeroRace race, HeroClass hero_class, int experience_level, int reputation, HeroStatus status) {
-    Hero hero;
-    
-    if (name == NULL || strlen(name) == 0 || strlen(name) > MAX_HERO_NAME_LENGTH) {
-        fprintf(stderr, "Blad: Nieprawidlowe imie bohatera.\n");
-        hero.name[0] = '\0';
-        return hero;
-    }
-    
-    if (experience_level < 1) {
-        fprintf(stderr, "Blad: Poziom doswiadczenia musi byc >= 1.\n");
-        experience_level = 1;
-    }
-
-    if (reputation < 0 || reputation > 100) {
-        fprintf(stderr, "Blad: Reputacja musi byc w zakresie 0-100.\n");
-        reputation = 0;
-    }
-    
-    strncpy(hero.name, name, MAX_HERO_NAME_LENGTH);
-    hero.name[MAX_HERO_NAME_LENGTH] = '\0';
-    hero.race = race;
-    hero.hero_class = hero_class;
-    hero.experience_level = experience_level;
-    hero.reputation = reputation;
-    hero.status = status;
-    
-    return hero;
-}
-
 Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_class,
                int experience_level, int reputation, HeroStatus status) {
     if (list == NULL) {
@@ -125,16 +100,11 @@ Hero* add_hero(HeroList* list, const char* name, HeroRace race, HeroClass hero_c
         return NULL;
     }
 
-    Hero* new_hero = malloc(sizeof(Hero));
-    if (new_hero == NULL) {
-        return NULL;
-    }
-    
-    *new_hero = create_hero(name, race, hero_class, experience_level, reputation, status);
+    Hero* new_hero = create_hero(name, race, hero_class, experience_level, reputation, status);
     
     HeroNode* new_node = malloc(sizeof(HeroNode));
     if (new_node == NULL) {
-        free(new_hero);
+        free_hero(new_hero);
         return NULL;
     }
     
@@ -271,20 +241,20 @@ bool delete_hero(HeroList* list, Hero* hero) {
     }
 
     if (list->head->hero == hero) {
-        HeroNode* temp = list->head;
+        HeroNode* temp_node = list->head;
         list->head = list->head->next;
-        free(hero);
-        free(temp);
+        free_hero(hero);
+        free_list_node(temp_node);
         list->count--;
         return true;
     }
 
     for (HeroNode* current = list->head; current->next != NULL; current = current->next) {
         if (current->next->hero == hero) {
-            HeroNode* temp = current->next;
+            HeroNode* temp_node = current->next;
             current->next = current->next->next;
-            free(hero);
-            free(temp);
+            free_hero(hero);
+            free_list_node(temp_node);
             list->count--;
             return true;
         }
